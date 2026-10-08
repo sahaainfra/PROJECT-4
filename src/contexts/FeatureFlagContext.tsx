@@ -165,6 +165,14 @@ const defaultFlags: Record<string, FeatureFlag> = {
     rolloutPercent: 100,
     ownerPrompt: 'Part 06',
   },
+  'ff.audit_sec': {
+    key: 'ff.audit_sec',
+    description: 'Audit, Security & Governance Foundation',
+    scopeType: 'global',
+    enabled: true,
+    rolloutPercent: 100,
+    ownerPrompt: 'Part 07',
+  },
 };
 
 const FeatureFlagCtx = createContext<FeatureFlagContextValue | null>(null);

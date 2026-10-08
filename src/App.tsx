@@ -5,7 +5,6 @@ import { FeatureFlagProvider } from './contexts/FeatureFlagContext';
 import { AppShell } from './shell/AppShell';
 import { HomeLaunchpad } from './pages/HomeLaunchpad';
 import { TechnicalConsole } from './pages/ObjectPage';
-import { SystemAuditPage } from './pages/SystemAudit';
 import { PreviewDashboard } from './preview/PreviewDashboard';
 import { WidgetStatusBoard } from './pages/WidgetStatusBoard';
 import { CICDConsole } from './pages/CICDConsole';
@@ -16,6 +15,8 @@ import { AllocationsManagement } from './pages/AllocationsManagement';
 import { RolesManagement } from './pages/RolesManagement';
 import { UserAssignments } from './pages/UserAssignments';
 import { EffectivePermissions } from './pages/EffectivePermissions';
+import { AuditExplorer } from './pages/AuditExplorer';
+import { SecurityConsole } from './pages/SecurityConsole';
 import {
   PurchaseRequisitionsPage,
   PurchaseOrdersPage,
@@ -53,7 +54,6 @@ function App() {
               <Route path="core" element={<CoreServicesConsole />} />
               <Route path="cicd" element={<CICDConsole />} />
               <Route path="preview/status" element={<WidgetStatusBoard />} />
-              <Route path="audit" element={<SystemAuditPage />} />
               <Route path="program/baseline" element={<TechnicalConsole />} />
               <Route path="" element={<TechnicalConsole />} />
             </Route>
@@ -101,6 +101,10 @@ function App() {
               <Route path="/admin/iam/roles" element={<RolesManagement />} />
               <Route path="/admin/iam/assignments" element={<UserAssignments />} />
               <Route path="/admin/iam/effective" element={<EffectivePermissions />} />
+
+              {/* Administration - Audit & Security (Part 07) */}
+              <Route path="/admin/audit" element={<AuditExplorer />} />
+              <Route path="/admin/security" element={<SecurityConsole />} />
 
               {/* Fallback */}
               <Route path="*" element={<Navigate to="/" replace />} />
