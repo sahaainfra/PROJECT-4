@@ -42,6 +42,9 @@ import { ComplianceScoreExplainer } from './pages/ComplianceScoreExplainer';
 import { NotificationCenter } from './pages/NotificationCenter';
 import { NotificationPreferences } from './pages/NotificationPreferences';
 import { TemplateManagement } from './pages/TemplateManagement';
+import { IntegrationHub } from './pages/IntegrationHub';
+import { MessageLog } from './pages/MessageLog';
+import { ApiClientsWebhooks } from './pages/ApiClientsWebhooks';
 import {
   PurchaseRequisitionsPage,
   PurchaseOrdersPage,
@@ -174,6 +177,11 @@ function App() {
 
               {/* Administration - Notifications (Part 16) */}
               <Route path="/admin/rt/templates" element={<TemplateManagement />} />
+
+              {/* Administration - Integrations (Part 17) */}
+              <Route path="/admin/intg" element={<IntegrationHub />} />
+              <Route path="/admin/intg/messages" element={<MessageLog />} />
+              <Route path="/admin/intg/api-clients" element={<ApiClientsWebhooks />} />
 
               {/* Fallback */}
               <Route path="*" element={<Navigate to="/" replace />} />
