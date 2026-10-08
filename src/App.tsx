@@ -17,6 +17,7 @@ import { UserAssignments } from './pages/UserAssignments';
 import { EffectivePermissions } from './pages/EffectivePermissions';
 import { AuditExplorer } from './pages/AuditExplorer';
 import { SecurityConsole } from './pages/SecurityConsole';
+import { SecureByDesignConsole } from './pages/SecureByDesignConsole';
 import {
   PurchaseRequisitionsPage,
   PurchaseOrdersPage,
@@ -51,6 +52,7 @@ function App() {
 
             {/* Technical Console — /_tech namespace (DS-32) */}
             <Route path="/_tech">
+              <Route path="secbase" element={<SecureByDesignConsole />} />
               <Route path="core" element={<CoreServicesConsole />} />
               <Route path="cicd" element={<CICDConsole />} />
               <Route path="preview/status" element={<WidgetStatusBoard />} />

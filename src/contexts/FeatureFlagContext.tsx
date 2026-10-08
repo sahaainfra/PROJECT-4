@@ -173,6 +173,14 @@ const defaultFlags: Record<string, FeatureFlag> = {
     rolloutPercent: 100,
     ownerPrompt: 'Part 07',
   },
+  'ff.secbase': {
+    key: 'ff.secbase',
+    description: 'Secure-by-Design Foundation',
+    scopeType: 'global',
+    enabled: true,
+    rolloutPercent: 100,
+    ownerPrompt: 'Part 08',
+  },
 };
 
 const FeatureFlagCtx = createContext<FeatureFlagContextValue | null>(null);
