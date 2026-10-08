@@ -10,6 +10,9 @@ import { PreviewDashboard } from './preview/PreviewDashboard';
 import { WidgetStatusBoard } from './pages/WidgetStatusBoard';
 import { CICDConsole } from './pages/CICDConsole';
 import { CoreServicesConsole } from './pages/CoreServicesConsole';
+import { OrganisationExplorer } from './pages/OrganisationExplorer';
+import { ProjectsManagement } from './pages/ProjectsManagement';
+import { AllocationsManagement } from './pages/AllocationsManagement';
 import {
   PurchaseRequisitionsPage,
   PurchaseOrdersPage,
@@ -84,6 +87,11 @@ function App() {
 
               {/* Reports */}
               <Route path="/reports" element={<ReportsPage />} />
+
+              {/* Administration - Organization (Part 05) */}
+              <Route path="/admin/org" element={<OrganisationExplorer />} />
+              <Route path="/admin/org/projects" element={<ProjectsManagement />} />
+              <Route path="/admin/org/allocations" element={<AllocationsManagement />} />
 
               {/* Fallback */}
               <Route path="*" element={<Navigate to="/" replace />} />
