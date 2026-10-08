@@ -85,6 +85,14 @@ const defaultFlags: Record<string, FeatureFlag> = {
     rolloutPercent: 100,
     ownerPrompt: 'Part 01',
   },
+  'ff.preview': {
+    key: 'ff.preview',
+    description: 'Live Dashboard Preview & Walking Skeleton',
+    scopeType: 'global',
+    enabled: true,
+    rolloutPercent: 100,
+    ownerPrompt: 'Part 02',
+  },
   'ff.modules.procurement': {
     key: 'ff.modules.procurement',
     description: 'Procurement module (PR/PO/GRN)',

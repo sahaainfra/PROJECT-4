@@ -44,6 +44,15 @@ function KPICard({ title, value, trend, trendValue, iconKey, color }: KPICardPro
           <Icon size={20} style={{ color: color || 'var(--brand-primary)' }} />
         </div>
       </div>
+
+      {/* Preview Environment Link (Part 02) */}
+      <div className="mt-[var(--density-spacing-xl)] pt-[var(--density-spacing-lg)] border-t" style={{ borderColor: 'var(--border-color)' }}>
+        <a href="/preview" className="inline-flex items-center gap-2 px-4 py-2 rounded-[var(--density-border-radius)] text-xs font-medium transition-all hover:opacity-90 hover:-translate-y-0.5"
+          style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)', color: '#fff' }}>
+          <span className="text-[10px] px-1.5 py-0.5 rounded font-bold" style={{ background: 'rgba(0,0,0,0.2)' }}>PREVIEW</span>
+          Open Dashboard Preview — 12 Personas · Stakeholder Review
+        </a>
+      </div>
     </div>
   );
 }

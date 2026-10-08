@@ -162,12 +162,22 @@ export function TechnicalConsole() {
         </div>
       </div>
 
-      {/* Quick Navigation to Audit */}
-      <div className="mb-[var(--density-spacing-lg)]">
+      {/* Quick Navigation to Audit & Preview */}
+      <div className="mb-[var(--density-spacing-lg)] flex flex-wrap gap-2">
         <a href="/_tech/audit" className="inline-flex items-center gap-2 px-4 py-2 rounded-[var(--density-border-radius)] text-sm font-medium transition-colors hover:opacity-90"
           style={{ background: 'var(--brand-primary)', color: '#fff' }}>
           {React.createElement(getIcon('sys.eye'), { size: 16 })}
-          Open System Audit (Part 01)
+          System Audit (Part 01)
+        </a>
+        <a href="/preview" className="inline-flex items-center gap-2 px-4 py-2 rounded-[var(--density-border-radius)] text-sm font-medium transition-colors hover:opacity-90"
+          style={{ background: '#d97706', color: '#fff' }}>
+          {React.createElement(getIcon('sys.eye'), { size: 16 })}
+          Dashboard Preview (Part 02)
+        </a>
+        <a href="/_tech/preview/status" className="inline-flex items-center gap-2 px-4 py-2 rounded-[var(--density-border-radius)] text-sm font-medium transition-colors hover:opacity-90 border"
+          style={{ borderColor: 'var(--border-color)', color: 'var(--text-secondary)' }}>
+          {React.createElement(getIcon('sys.zap'), { size: 16 })}
+          Widget Status Board
         </a>
       </div>
 

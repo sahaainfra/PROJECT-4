@@ -6,6 +6,8 @@ import { AppShell } from './shell/AppShell';
 import { HomeLaunchpad } from './pages/HomeLaunchpad';
 import { TechnicalConsole } from './pages/ObjectPage';
 import { SystemAuditPage } from './pages/SystemAudit';
+import { PreviewDashboard } from './preview/PreviewDashboard';
+import { WidgetStatusBoard } from './pages/WidgetStatusBoard';
 import {
   PurchaseRequisitionsPage,
   PurchaseOrdersPage,
@@ -35,8 +37,12 @@ function App() {
       <FeatureFlagProvider>
         <BrowserRouter>
           <Routes>
+            {/* Preview Environment — Part 02 (separate, never linked from production) */}
+            <Route path="/preview" element={<PreviewDashboard />} />
+
             {/* Technical Console — /_tech namespace (DS-32) */}
             <Route path="/_tech">
+              <Route path="preview/status" element={<WidgetStatusBoard />} />
               <Route path="audit" element={<SystemAuditPage />} />
               <Route path="program/baseline" element={<TechnicalConsole />} />
               <Route path="" element={<TechnicalConsole />} />
