@@ -229,6 +229,14 @@ const defaultFlags: Record<string, FeatureFlag> = {
     rolloutPercent: 100,
     ownerPrompt: 'Part 14',
   },
+  'ff.acc': {
+    key: 'ff.acc',
+    description: 'Accountability, Responsibility Assignment & Action Ledger',
+    scopeType: 'global',
+    enabled: true,
+    rolloutPercent: 100,
+    ownerPrompt: 'Part 15',
+  },
 };
 
 const FeatureFlagCtx = createContext<FeatureFlagContextValue | null>(null);

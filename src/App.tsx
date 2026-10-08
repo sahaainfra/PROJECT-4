@@ -34,6 +34,11 @@ import { AuthorityMatrix } from './pages/AuthorityMatrix';
 import { SimulationDashboard } from './pages/SimulationDashboard';
 import { EmergencyApprovals } from './pages/EmergencyApprovals';
 import { ProtocolConsole } from './pages/ProtocolConsole';
+import { RaciMatrixEditor } from './pages/RaciMatrixEditor';
+import { ActionLedgerViewer } from './pages/ActionLedgerViewer';
+import { MyAccountabilityWorkspace } from './pages/MyAccountabilityWorkspace';
+import { TeamAccountabilityDashboard } from './pages/TeamAccountabilityDashboard';
+import { ComplianceScoreExplainer } from './pages/ComplianceScoreExplainer';
 import {
   PurchaseRequisitionsPage,
   PurchaseOrdersPage,
@@ -150,6 +155,15 @@ function App() {
 
               {/* Administration - Protocol (Part 14) */}
               <Route path="/admin/protocol" element={<ProtocolConsole />} />
+
+              {/* Administration - Accountability (Part 15) */}
+              <Route path="/admin/acc/raci" element={<RaciMatrixEditor />} />
+              <Route path="/admin/acc/ledger" element={<ActionLedgerViewer />} />
+              <Route path="/admin/acc/team" element={<TeamAccountabilityDashboard />} />
+              <Route path="/admin/acc/scores" element={<ComplianceScoreExplainer />} />
+
+              {/* Home - My Accountability (Part 15) */}
+              <Route path="/home/acc" element={<MyAccountabilityWorkspace />} />
 
               {/* Fallback */}
               <Route path="*" element={<Navigate to="/" replace />} />
