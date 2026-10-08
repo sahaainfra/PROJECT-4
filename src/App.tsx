@@ -9,6 +9,7 @@ import { SystemAuditPage } from './pages/SystemAudit';
 import { PreviewDashboard } from './preview/PreviewDashboard';
 import { WidgetStatusBoard } from './pages/WidgetStatusBoard';
 import { CICDConsole } from './pages/CICDConsole';
+import { CoreServicesConsole } from './pages/CoreServicesConsole';
 import {
   PurchaseRequisitionsPage,
   PurchaseOrdersPage,
@@ -43,6 +44,7 @@ function App() {
 
             {/* Technical Console — /_tech namespace (DS-32) */}
             <Route path="/_tech">
+              <Route path="core" element={<CoreServicesConsole />} />
               <Route path="cicd" element={<CICDConsole />} />
               <Route path="preview/status" element={<WidgetStatusBoard />} />
               <Route path="audit" element={<SystemAuditPage />} />

@@ -141,6 +141,14 @@ const defaultFlags: Record<string, FeatureFlag> = {
     rolloutPercent: 100,
     ownerPrompt: 'Part 60',
   },
+  'ff.core': {
+    key: 'ff.core',
+    description: 'Core Enterprise ERP Foundation (Shared Services)',
+    scopeType: 'global',
+    enabled: true,
+    rolloutPercent: 100,
+    ownerPrompt: 'Part 04',
+  },
 };
 
 const FeatureFlagCtx = createContext<FeatureFlagContextValue | null>(null);
