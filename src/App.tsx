@@ -33,6 +33,7 @@ import { DecisionTableEditor } from './pages/DecisionTableEditor';
 import { AuthorityMatrix } from './pages/AuthorityMatrix';
 import { SimulationDashboard } from './pages/SimulationDashboard';
 import { EmergencyApprovals } from './pages/EmergencyApprovals';
+import { ProtocolConsole } from './pages/ProtocolConsole';
 import {
   PurchaseRequisitionsPage,
   PurchaseOrdersPage,
@@ -146,6 +147,9 @@ function App() {
               <Route path="/admin/rules/authority-matrix" element={<AuthorityMatrix />} />
               <Route path="/admin/rules/simulations" element={<SimulationDashboard />} />
               <Route path="/admin/rules/emergency" element={<EmergencyApprovals />} />
+
+              {/* Administration - Protocol (Part 14) */}
+              <Route path="/admin/protocol" element={<ProtocolConsole />} />
 
               {/* Fallback */}
               <Route path="*" element={<Navigate to="/" replace />} />
