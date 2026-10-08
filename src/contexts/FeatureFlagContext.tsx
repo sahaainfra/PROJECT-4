@@ -197,6 +197,14 @@ const defaultFlags: Record<string, FeatureFlag> = {
     rolloutPercent: 100,
     ownerPrompt: 'Part 10',
   },
+  'ff.evbus': {
+    key: 'ff.evbus',
+    description: 'Real-Time Event Bus & Integration Platform',
+    scopeType: 'global',
+    enabled: true,
+    rolloutPercent: 100,
+    ownerPrompt: 'Part 11',
+  },
 };
 
 const FeatureFlagCtx = createContext<FeatureFlagContextValue | null>(null);
