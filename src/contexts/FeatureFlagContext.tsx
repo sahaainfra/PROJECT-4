@@ -93,6 +93,14 @@ const defaultFlags: Record<string, FeatureFlag> = {
     rolloutPercent: 100,
     ownerPrompt: 'Part 02',
   },
+  'ff.cicd': {
+    key: 'ff.cicd',
+    description: 'Quality Gates, CI/CD & Release Engineering',
+    scopeType: 'role',
+    enabled: true,
+    rolloutPercent: 100,
+    ownerPrompt: 'Part 03',
+  },
   'ff.modules.procurement': {
     key: 'ff.modules.procurement',
     description: 'Procurement module (PR/PO/GRN)',

@@ -174,6 +174,11 @@ export function TechnicalConsole() {
           {React.createElement(getIcon('sys.eye'), { size: 16 })}
           Dashboard Preview (Part 02)
         </a>
+        <a href="/_tech/cicd" className="inline-flex items-center gap-2 px-4 py-2 rounded-[var(--density-border-radius)] text-sm font-medium transition-colors hover:opacity-90"
+          style={{ background: '#059669', color: '#fff' }}>
+          {React.createElement(getIcon('sys.git'), { size: 16 })}
+          CI/CD & Releases (Part 03)
+        </a>
         <a href="/_tech/preview/status" className="inline-flex items-center gap-2 px-4 py-2 rounded-[var(--density-border-radius)] text-sm font-medium transition-colors hover:opacity-90 border"
           style={{ borderColor: 'var(--border-color)', color: 'var(--text-secondary)' }}>
           {React.createElement(getIcon('sys.zap'), { size: 16 })}
