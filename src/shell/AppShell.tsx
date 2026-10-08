@@ -4,7 +4,7 @@ import { ShellBar } from './ShellBar';
 import { SideNavigation, MobileBottomNav } from './SideNavigation';
 
 // ═══════════════════════════════════════════════════════════
-// APPLICATION SHELL (DS-12, DS-29)
+// APPLICATION SHELL — Construction ERP
 // Shell bar + Side nav + Content area
 // ═══════════════════════════════════════════════════════════
 
@@ -29,10 +29,12 @@ export function AppShell() {
       <div className="flex flex-1 overflow-hidden">
         {/* Desktop/Tablet Side Navigation */}
         <aside
-          className={`hidden md:flex flex-col border-r transition-all duration-200 ${
-            navCollapsed ? 'w-14' : 'w-60'
-          }`}
-          style={{ borderColor: 'var(--border-color)' }}
+          className="hidden md:flex flex-col border-r transition-all"
+          style={{
+            width: navCollapsed ? 'var(--density-nav-w-collapsed)' : 'var(--density-nav-w)',
+            borderColor: 'var(--border-subtle)',
+            transitionDuration: 'var(--motion-normal)',
+          }}
         >
           <SideNavigation collapsed={navCollapsed} />
         </aside>
@@ -40,15 +42,9 @@ export function AppShell() {
         {/* Mobile overlay navigation */}
         {mobileNavOpen && (
           <div className="fixed inset-0 z-40 md:hidden">
-            <div
-              className="absolute inset-0"
-              style={{ background: 'var(--overlay-bg)' }}
-              onClick={() => setMobileNavOpen(false)}
-            />
-            <aside
-              className="absolute left-0 top-0 bottom-0 w-64 z-50 animate-fade-in"
-              style={{ background: 'var(--nav-bg)', borderRight: '1px solid var(--border-color)' }}
-            >
+            <div className="absolute inset-0" style={{ background: 'var(--overlay-bg)' }} onClick={() => setMobileNavOpen(false)} />
+            <aside className="absolute left-0 top-0 bottom-0 w-64 z-50 animate-fade-in"
+              style={{ background: 'var(--nav-bg)', borderRight: '1px solid var(--border-subtle)' }}>
               <SideNavigation collapsed={false} onNavigate={() => setMobileNavOpen(false)} />
             </aside>
           </div>
