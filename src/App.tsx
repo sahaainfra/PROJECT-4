@@ -29,6 +29,10 @@ import { MyApprovalsInbox } from './pages/MyApprovalsInbox';
 import { WorkflowDesigner } from './pages/WorkflowDesigner';
 import { WorkflowMonitor } from './pages/WorkflowMonitor';
 import { DelegationManagement } from './pages/DelegationManagement';
+import { DecisionTableEditor } from './pages/DecisionTableEditor';
+import { AuthorityMatrix } from './pages/AuthorityMatrix';
+import { SimulationDashboard } from './pages/SimulationDashboard';
+import { EmergencyApprovals } from './pages/EmergencyApprovals';
 import {
   PurchaseRequisitionsPage,
   PurchaseOrdersPage,
@@ -136,6 +140,12 @@ function App() {
               <Route path="/admin/wf/designer" element={<WorkflowDesigner />} />
               <Route path="/admin/wf/monitor" element={<WorkflowMonitor />} />
               <Route path="/admin/wf/delegations" element={<DelegationManagement />} />
+
+              {/* Administration - Rules (Part 13) */}
+              <Route path="/admin/rules/decision-tables" element={<DecisionTableEditor />} />
+              <Route path="/admin/rules/authority-matrix" element={<AuthorityMatrix />} />
+              <Route path="/admin/rules/simulations" element={<SimulationDashboard />} />
+              <Route path="/admin/rules/emergency" element={<EmergencyApprovals />} />
 
               {/* Fallback */}
               <Route path="*" element={<Navigate to="/" replace />} />
