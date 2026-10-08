@@ -13,6 +13,9 @@ import { CoreServicesConsole } from './pages/CoreServicesConsole';
 import { OrganisationExplorer } from './pages/OrganisationExplorer';
 import { ProjectsManagement } from './pages/ProjectsManagement';
 import { AllocationsManagement } from './pages/AllocationsManagement';
+import { RolesManagement } from './pages/RolesManagement';
+import { UserAssignments } from './pages/UserAssignments';
+import { EffectivePermissions } from './pages/EffectivePermissions';
 import {
   PurchaseRequisitionsPage,
   PurchaseOrdersPage,
@@ -92,6 +95,12 @@ function App() {
               <Route path="/admin/org" element={<OrganisationExplorer />} />
               <Route path="/admin/org/projects" element={<ProjectsManagement />} />
               <Route path="/admin/org/allocations" element={<AllocationsManagement />} />
+
+              {/* Administration - IAM (Part 06) */}
+              <Route path="/admin/iam" element={<RolesManagement />} />
+              <Route path="/admin/iam/roles" element={<RolesManagement />} />
+              <Route path="/admin/iam/assignments" element={<UserAssignments />} />
+              <Route path="/admin/iam/effective" element={<EffectivePermissions />} />
 
               {/* Fallback */}
               <Route path="*" element={<Navigate to="/" replace />} />

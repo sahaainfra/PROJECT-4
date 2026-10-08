@@ -157,6 +157,14 @@ const defaultFlags: Record<string, FeatureFlag> = {
     rolloutPercent: 100,
     ownerPrompt: 'Part 05',
   },
+  'ff.iam': {
+    key: 'ff.iam',
+    description: 'User, Role & Permission Architecture (Enterprise RBAC)',
+    scopeType: 'global',
+    enabled: true,
+    rolloutPercent: 100,
+    ownerPrompt: 'Part 06',
+  },
 };
 
 const FeatureFlagCtx = createContext<FeatureFlagContextValue | null>(null);
