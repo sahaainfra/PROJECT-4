@@ -39,6 +39,9 @@ import { ActionLedgerViewer } from './pages/ActionLedgerViewer';
 import { MyAccountabilityWorkspace } from './pages/MyAccountabilityWorkspace';
 import { TeamAccountabilityDashboard } from './pages/TeamAccountabilityDashboard';
 import { ComplianceScoreExplainer } from './pages/ComplianceScoreExplainer';
+import { NotificationCenter } from './pages/NotificationCenter';
+import { NotificationPreferences } from './pages/NotificationPreferences';
+import { TemplateManagement } from './pages/TemplateManagement';
 import {
   PurchaseRequisitionsPage,
   PurchaseOrdersPage,
@@ -164,6 +167,13 @@ function App() {
 
               {/* Home - My Accountability (Part 15) */}
               <Route path="/home/acc" element={<MyAccountabilityWorkspace />} />
+
+              {/* Home - Notifications (Part 16) */}
+              <Route path="/home/rt" element={<NotificationCenter />} />
+              <Route path="/home/rt/preferences" element={<NotificationPreferences />} />
+
+              {/* Administration - Notifications (Part 16) */}
+              <Route path="/admin/rt/templates" element={<TemplateManagement />} />
 
               {/* Fallback */}
               <Route path="*" element={<Navigate to="/" replace />} />
