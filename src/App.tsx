@@ -18,6 +18,11 @@ import { EffectivePermissions } from './pages/EffectivePermissions';
 import { AuditExplorer } from './pages/AuditExplorer';
 import { SecurityConsole } from './pages/SecurityConsole';
 import { SecureByDesignConsole } from './pages/SecureByDesignConsole';
+import { SoDRulesManagement } from './pages/SoDRulesManagement';
+import { SoDViolationsExceptions } from './pages/SoDViolationsExceptions';
+import { AccessReviews } from './pages/AccessReviews';
+import { PrivilegedAccessConsole } from './pages/PrivilegedAccessConsole';
+import { MyDevicesSessions } from './pages/MyDevicesSessions';
 import {
   PurchaseRequisitionsPage,
   PurchaseOrdersPage,
@@ -107,6 +112,14 @@ function App() {
               {/* Administration - Audit & Security (Part 07) */}
               <Route path="/admin/audit" element={<AuditExplorer />} />
               <Route path="/admin/security" element={<SecurityConsole />} />
+
+              {/* Administration - Identity & SoD (Part 09) */}
+              <Route path="/admin/idsod" element={<SoDRulesManagement />} />
+              <Route path="/admin/idsod/rules" element={<SoDRulesManagement />} />
+              <Route path="/admin/idsod/violations" element={<SoDViolationsExceptions />} />
+              <Route path="/admin/idsod/access-reviews" element={<AccessReviews />} />
+              <Route path="/admin/idsod/privileged" element={<PrivilegedAccessConsole />} />
+              <Route path="/admin/idsod/my-devices" element={<MyDevicesSessions />} />
 
               {/* Fallback */}
               <Route path="*" element={<Navigate to="/" replace />} />
