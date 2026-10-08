@@ -189,6 +189,14 @@ const defaultFlags: Record<string, FeatureFlag> = {
     rolloutPercent: 100,
     ownerPrompt: 'Part 09',
   },
+  'ff.obs': {
+    key: 'ff.obs',
+    description: 'Observability, Performance & Reliability',
+    scopeType: 'global',
+    enabled: true,
+    rolloutPercent: 100,
+    ownerPrompt: 'Part 10',
+  },
 };
 
 const FeatureFlagCtx = createContext<FeatureFlagContextValue | null>(null);

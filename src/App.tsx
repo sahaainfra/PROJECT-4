@@ -23,6 +23,7 @@ import { SoDViolationsExceptions } from './pages/SoDViolationsExceptions';
 import { AccessReviews } from './pages/AccessReviews';
 import { PrivilegedAccessConsole } from './pages/PrivilegedAccessConsole';
 import { MyDevicesSessions } from './pages/MyDevicesSessions';
+import { ObservabilityConsole } from './pages/ObservabilityConsole';
 import {
   PurchaseRequisitionsPage,
   PurchaseOrdersPage,
@@ -57,6 +58,7 @@ function App() {
 
             {/* Technical Console — /_tech namespace (DS-32) */}
             <Route path="/_tech">
+              <Route path="obs" element={<ObservabilityConsole />} />
               <Route path="secbase" element={<SecureByDesignConsole />} />
               <Route path="core" element={<CoreServicesConsole />} />
               <Route path="cicd" element={<CICDConsole />} />
