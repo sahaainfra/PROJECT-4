@@ -25,6 +25,10 @@ import { PrivilegedAccessConsole } from './pages/PrivilegedAccessConsole';
 import { MyDevicesSessions } from './pages/MyDevicesSessions';
 import { ObservabilityConsole } from './pages/ObservabilityConsole';
 import { EventBusConsole } from './pages/EventBusConsole';
+import { MyApprovalsInbox } from './pages/MyApprovalsInbox';
+import { WorkflowDesigner } from './pages/WorkflowDesigner';
+import { WorkflowMonitor } from './pages/WorkflowMonitor';
+import { DelegationManagement } from './pages/DelegationManagement';
 import {
   PurchaseRequisitionsPage,
   PurchaseOrdersPage,
@@ -73,6 +77,9 @@ function App() {
             <Route element={<AppShell />}>
               {/* Home Launchpad */}
               <Route path="/" element={<HomeLaunchpad />} />
+
+              {/* Workflow - My Approvals (Part 12) */}
+              <Route path="/home/wf" element={<MyApprovalsInbox />} />
 
               {/* Procurement Module */}
               <Route path="/procurement" element={<ProcurementIndexPage />} />
@@ -124,6 +131,11 @@ function App() {
               <Route path="/admin/idsod/access-reviews" element={<AccessReviews />} />
               <Route path="/admin/idsod/privileged" element={<PrivilegedAccessConsole />} />
               <Route path="/admin/idsod/my-devices" element={<MyDevicesSessions />} />
+
+              {/* Administration - Workflow (Part 12) */}
+              <Route path="/admin/wf/designer" element={<WorkflowDesigner />} />
+              <Route path="/admin/wf/monitor" element={<WorkflowMonitor />} />
+              <Route path="/admin/wf/delegations" element={<DelegationManagement />} />
 
               {/* Fallback */}
               <Route path="*" element={<Navigate to="/" replace />} />
