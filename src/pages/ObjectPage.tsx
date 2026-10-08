@@ -162,6 +162,15 @@ export function TechnicalConsole() {
         </div>
       </div>
 
+      {/* Quick Navigation to Audit */}
+      <div className="mb-[var(--density-spacing-lg)]">
+        <a href="/_tech/audit" className="inline-flex items-center gap-2 px-4 py-2 rounded-[var(--density-border-radius)] text-sm font-medium transition-colors hover:opacity-90"
+          style={{ background: 'var(--brand-primary)', color: '#fff' }}>
+          {React.createElement(getIcon('sys.eye'), { size: 16 })}
+          Open System Audit (Part 01)
+        </a>
+      </div>
+
       {/* Baseline Report */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[var(--density-spacing-md)] mb-[var(--density-spacing-xl)]">
         <div className="rounded-[var(--density-border-radius)] p-4" style={{ background: 'var(--tile-bg)', border: '1px solid var(--tile-border)' }}>

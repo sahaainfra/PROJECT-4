@@ -77,6 +77,14 @@ const defaultFlags: Record<string, FeatureFlag> = {
     rolloutPercent: 100,
     ownerPrompt: 'Part 00',
   },
+  'ff.audit': {
+    key: 'ff.audit',
+    description: 'Existing System Audit & Architecture Discovery',
+    scopeType: 'role',
+    enabled: true,
+    rolloutPercent: 100,
+    ownerPrompt: 'Part 01',
+  },
   'ff.modules.procurement': {
     key: 'ff.modules.procurement',
     description: 'Procurement module (PR/PO/GRN)',

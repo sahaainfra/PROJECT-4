@@ -5,6 +5,7 @@ import { FeatureFlagProvider } from './contexts/FeatureFlagContext';
 import { AppShell } from './shell/AppShell';
 import { HomeLaunchpad } from './pages/HomeLaunchpad';
 import { TechnicalConsole } from './pages/ObjectPage';
+import { SystemAuditPage } from './pages/SystemAudit';
 import {
   PurchaseRequisitionsPage,
   PurchaseOrdersPage,
@@ -36,6 +37,7 @@ function App() {
           <Routes>
             {/* Technical Console — /_tech namespace (DS-32) */}
             <Route path="/_tech">
+              <Route path="audit" element={<SystemAuditPage />} />
               <Route path="program/baseline" element={<TechnicalConsole />} />
               <Route path="" element={<TechnicalConsole />} />
             </Route>
