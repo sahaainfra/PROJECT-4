@@ -1,1 +1,257 @@
 @import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════
+   DESIGN TOKENS — Construction ERP Design System (DS-4, DS-5)
+   Light, Dark, High-Contrast themes + Density modes
+   ═══════════════════════════════════════════════════════════ */
+
+@theme {
+  /* Semantic color tokens */
+  --color-erp-shell: var(--shell-bg);
+  --color-erp-surface: var(--surface-bg);
+  --color-erp-elevated: var(--elevated-bg);
+  --color-erp-border: var(--border-color);
+  --color-erp-text: var(--text-primary);
+  --color-erp-text-secondary: var(--text-secondary);
+  --color-erp-text-muted: var(--text-muted);
+  --color-erp-primary: var(--brand-primary);
+  --color-erp-primary-hover: var(--brand-primary-hover);
+  --color-erp-accent: var(--brand-accent);
+  --color-erp-success: var(--semantic-success);
+  --color-erp-warning: var(--semantic-warning);
+  --color-erp-error: var(--semantic-error);
+  --color-erp-info: var(--semantic-info);
+}
+
+:root {
+  /* ── Light Theme (default) ── */
+  --shell-bg: #f5f6f8;
+  --surface-bg: #ffffff;
+  --elevated-bg: #ffffff;
+  --border-color: #e2e5e9;
+  --text-primary: #1a1d21;
+  --text-secondary: #4a5568;
+  --text-muted: #8896a6;
+  --brand-primary: #0066cc;
+  --brand-primary-hover: #0052a3;
+  --brand-accent: #0891b2;
+  --semantic-success: #059669;
+  --semantic-warning: #d97706;
+  --semantic-error: #dc2626;
+  --semantic-info: #2563eb;
+  --shell-bar-bg: #1a1d21;
+  --shell-bar-text: #ffffff;
+  --nav-bg: #ffffff;
+  --nav-hover: #f0f4f8;
+  --nav-active: #e8f0fe;
+  --nav-active-text: #0066cc;
+  --tile-bg: #ffffff;
+  --tile-hover: #f8fafc;
+  --tile-border: #e2e5e9;
+  --kpi-positive: #059669;
+  --kpi-negative: #dc2626;
+  --kpi-neutral: #6b7280;
+  --status-open: #2563eb;
+  --status-progress: #d97706;
+  --status-approved: #059669;
+  --status-rejected: #dc2626;
+  --status-closed: #6b7280;
+  --overlay-bg: rgba(0, 0, 0, 0.5);
+  --focus-ring: 0 0 0 2px #0066cc;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+  /* ── Density: Cozy (default) ── */
+  --density-spacing-xs: 4px;
+  --density-spacing-sm: 8px;
+  --density-spacing-md: 12px;
+  --density-spacing-lg: 16px;
+  --density-spacing-xl: 24px;
+  --density-spacing-2xl: 32px;
+  --density-font-size-xs: 0.75rem;
+  --density-font-size-sm: 0.8125rem;
+  --density-font-size-base: 0.875rem;
+  --density-font-size-lg: 1rem;
+  --density-font-size-xl: 1.125rem;
+  --density-row-height: 40px;
+  --density-header-height: 56px;
+  --density-shell-height: 48px;
+  --density-border-radius: 6px;
+  --density-touch-target: 32px;
+
+  /* Tabular figures for amounts */
+  --font-tabular: 'IBM Plex Sans', monospace;
+}
+
+/* ── Dark Theme ── */
+[data-theme="dark"] {
+  --shell-bg: #0f1117;
+  --surface-bg: #1a1d24;
+  --elevated-bg: #22252d;
+  --border-color: #2d3240;
+  --text-primary: #e8ecf1;
+  --text-secondary: #a0aec0;
+  --text-muted: #6b7a8d;
+  --brand-primary: #4da3ff;
+  --brand-primary-hover: #6bb5ff;
+  --brand-accent: #22d3ee;
+  --semantic-success: #34d399;
+  --semantic-warning: #fbbf24;
+  --semantic-error: #f87171;
+  --semantic-info: #60a5fa;
+  --shell-bar-bg: #0a0c10;
+  --shell-bar-text: #e8ecf1;
+  --nav-bg: #1a1d24;
+  --nav-hover: #22252d;
+  --nav-active: #1e2a3a;
+  --nav-active-text: #4da3ff;
+  --tile-bg: #1a1d24;
+  --tile-hover: #22252d;
+  --tile-border: #2d3240;
+  --kpi-positive: #34d399;
+  --kpi-negative: #f87171;
+  --kpi-neutral: #9ca3af;
+  --status-open: #60a5fa;
+  --status-progress: #fbbf24;
+  --status-approved: #34d399;
+  --status-rejected: #f87171;
+  --status-closed: #9ca3af;
+  --overlay-bg: rgba(0, 0, 0, 0.7);
+  --focus-ring: 0 0 0 2px #4da3ff;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+}
+
+/* ── High Contrast Theme ── */
+[data-theme="high-contrast"] {
+  --shell-bg: #000000;
+  --surface-bg: #0a0a0a;
+  --elevated-bg: #1a1a1a;
+  --border-color: #ffffff;
+  --text-primary: #ffffff;
+  --text-secondary: #e0e0e0;
+  --text-muted: #b0b0b0;
+  --brand-primary: #66b3ff;
+  --brand-primary-hover: #99ccff;
+  --brand-accent: #00e5ff;
+  --semantic-success: #00ff88;
+  --semantic-warning: #ffdd00;
+  --semantic-error: #ff4444;
+  --semantic-info: #4488ff;
+  --shell-bar-bg: #000000;
+  --shell-bar-text: #ffffff;
+  --nav-bg: #0a0a0a;
+  --nav-hover: #1a1a1a;
+  --nav-active: #001a33;
+  --nav-active-text: #66b3ff;
+  --tile-bg: #0a0a0a;
+  --tile-hover: #1a1a1a;
+  --tile-border: #ffffff;
+  --kpi-positive: #00ff88;
+  --kpi-negative: #ff4444;
+  --kpi-neutral: #cccccc;
+  --overlay-bg: rgba(0, 0, 0, 0.9);
+  --focus-ring: 0 0 0 3px #ffffff;
+  --shadow-sm: none;
+  --shadow-md: 0 0 0 1px #ffffff;
+  --shadow-lg: 0 0 0 2px #ffffff;
+}
+
+/* ── Density: Compact ── */
+[data-density="compact"] {
+  --density-spacing-xs: 2px;
+  --density-spacing-sm: 4px;
+  --density-spacing-md: 8px;
+  --density-spacing-lg: 12px;
+  --density-spacing-xl: 16px;
+  --density-spacing-2xl: 24px;
+  --density-font-size-xs: 0.6875rem;
+  --density-font-size-sm: 0.75rem;
+  --density-font-size-base: 0.8125rem;
+  --density-font-size-lg: 0.875rem;
+  --density-font-size-xl: 1rem;
+  --density-row-height: 32px;
+  --density-header-height: 48px;
+  --density-shell-height: 40px;
+  --density-border-radius: 4px;
+  --density-touch-target: 28px;
+}
+
+/* ── Density: Touch (Mobile) ── */
+[data-density="touch"] {
+  --density-spacing-xs: 6px;
+  --density-spacing-sm: 12px;
+  --density-spacing-md: 16px;
+  --density-spacing-lg: 20px;
+  --density-spacing-xl: 28px;
+  --density-spacing-2xl: 36px;
+  --density-font-size-xs: 0.8125rem;
+  --density-font-size-sm: 0.875rem;
+  --density-font-size-base: 1rem;
+  --density-font-size-lg: 1.125rem;
+  --density-font-size-xl: 1.25rem;
+  --density-row-height: 48px;
+  --density-header-height: 64px;
+  --density-shell-height: 56px;
+  --density-border-radius: 8px;
+  --density-touch-target: 44px;
+}
+
+/* ── Tabular figures utility ── */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* ── Base styles ── */
+body {
+  background-color: var(--shell-bg);
+  color: var(--text-primary);
+  font-size: var(--density-font-size-base);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Focus styles ── */
+*:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--density-border-radius);
+}
+
+/* ── Scrollbar styles ── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* ── Animation utilities ── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideInLeft {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
