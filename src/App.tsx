@@ -45,6 +45,11 @@ import { TemplateManagement } from './pages/TemplateManagement';
 import { IntegrationHub } from './pages/IntegrationHub';
 import { MessageLog } from './pages/MessageLog';
 import { ApiClientsWebhooks } from './pages/ApiClientsWebhooks';
+import { DeveloperPortal } from './pages/DeveloperPortal';
+import { ApiClientManagement } from './pages/ApiClientManagement';
+import { ApiUsageDashboard } from './pages/ApiUsageDashboard';
+import { BulkJobMonitor } from './pages/BulkJobMonitor';
+import { ApiVersionManagement } from './pages/ApiVersionManagement';
 import {
   PurchaseRequisitionsPage,
   PurchaseOrdersPage,
@@ -182,6 +187,14 @@ function App() {
               <Route path="/admin/intg" element={<IntegrationHub />} />
               <Route path="/admin/intg/messages" element={<MessageLog />} />
               <Route path="/admin/intg/api-clients" element={<ApiClientsWebhooks />} />
+
+              {/* Technical Console - API Platform (Part 18) */}
+              <Route path="/_tech/devapi" element={<DeveloperPortal />} />
+              <Route path="/_tech/devapi/portal" element={<DeveloperPortal />} />
+              <Route path="/_tech/devapi/clients" element={<ApiClientManagement />} />
+              <Route path="/_tech/devapi/usage" element={<ApiUsageDashboard />} />
+              <Route path="/_tech/devapi/bulk-jobs" element={<BulkJobMonitor />} />
+              <Route path="/_tech/devapi/versions" element={<ApiVersionManagement />} />
 
               {/* Fallback */}
               <Route path="*" element={<Navigate to="/" replace />} />
