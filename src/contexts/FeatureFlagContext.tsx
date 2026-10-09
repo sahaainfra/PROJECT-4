@@ -277,6 +277,14 @@ const defaultFlags: Record<string, FeatureFlag> = {
     rolloutPercent: 100,
     ownerPrompt: 'Part 20',
   },
+  'ff.rsp': {
+    key: 'ff.rsp',
+    description: 'Mobile + Tablet + Desktop Experience (Responsive Shell)',
+    scopeType: 'global',
+    enabled: true,
+    rolloutPercent: 100,
+    ownerPrompt: 'Part 21',
+  },
 };
 
 const FeatureFlagCtx = createContext<FeatureFlagContextValue | null>(null);
