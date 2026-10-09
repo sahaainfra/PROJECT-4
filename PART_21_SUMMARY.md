@@ -2,181 +2,221 @@
 
 ## Overview
 
-Part 21 implements a comprehensive responsive shell architecture that delivers device-specific user experiences for mobile, tablet, and desktop users. This includes PWA (Progressive Web App) support, device capability components (camera, GPS, QR scanner), offline detection, and a complete device management system.
+Part 21 implements a comprehensive responsive shell architecture that provides device-specific experiences for mobile, tablet, and desktop users. This includes adaptive navigation patterns, device capability components (camera, GPS, QR scanner), PWA support, connectivity monitoring, and offline-ready foundations.
 
 ## Implementation Summary
 
-### 1. Data Model (`src/data/deviceData.ts`)
+### 1. Data Model (`src/data/responsiveData.ts`)
 
-**Device Registry:**
-- 5 sample devices across different platforms (web, android, ios)
-- Device types: mobile, tablet, desktop
-- Trust levels: trusted, untrusted, revoked
-- Push notification token support
-- Last seen tracking for security
+**Device Types & Breakpoints:**
+- Mobile: 0-767px
+- Tablet: 768-1023px
+- Desktop: 1024px+
+- Orientation detection (portrait/landscape)
 
-**Device Capabilities:**
-- Camera access detection
-- GPS/geolocation support
-- QR/barcode scanner availability
-- File picker capability
-- Signature pad support
-- Voice-to-text availability
-- Biometric authentication
-- Offline storage (Service Worker + IndexedDB)
-- Push notifications
-
-**Utility Functions:**
-- `detectDeviceType()` - Automatically detect mobile/tablet/desktop
-- `detectPlatform()` - Detect OS platform
-- `getDeviceCapabilities()` - Check available device features
-- `getDevicesByUser()` - Get all devices for a user
-- `getTrustedDevices()` - Get only trusted devices
-
-### 2. Device Service (`src/core/DeviceService.ts`)
+**Navigation Configurations:**
+- Mobile: Bottom navigation (5 items) + More menu
+- Tablet: Navigation rail (collapsible)
+- Desktop: Full sidebar + header navigation
 
 **Device Registration:**
-- `registerDevice()` - Register a new device with audit logging
-- `autoRegisterCurrentDevice()` - Auto-register on first visit
-- `updateDeviceLastSeen()` - Track device activity
+- Registered devices tracking
+- Push token management
+- Trust status
+- Platform detection
 
-**Trust Management:**
-- `trustDevice()` - Mark device as trusted with audit trail
-- `revokeDevice()` - Revoke device access with reason tracking
+**PWA Configuration:**
+- Manifest with icons (72px to 512px)
+- Display modes (standalone, fullscreen, etc.)
+- Theme colors and branding
+- App shortcuts
 
-**Push Notifications:**
-- `requestPushPermission()` - Request browser notification permission
-- `subscribeToPush()` - Subscribe to push notifications
-- `updatePushToken()` - Update device push token
+**Capture Configurations:**
+- Camera: max photos, compression, dimensions
+- GPS: accuracy thresholds, mock location detection
+- QR Scanner: supported formats, viewfinder settings
+
+**Connectivity Monitoring:**
+- Online/offline status
+- Connection type (wifi/cellular/ethernet)
+- Bandwidth and RTT metrics
+- Data saver detection
+
+**Layout Configurations:**
+- Responsive grid columns (1/2/3)
+- Spacing and padding
+- Max content width
+
+**Performance Budgets:**
+- First load times per device
+- Route change times
+- API response times
+- Bundle size limits
+
+### 2. Responsive Service (`src/core/ResponsiveService.ts`)
+
+**Device Detection & Tracking:**
+- Real-time device type detection
+- Window resize and orientation change listeners
+- Device change event system
+- Capability checking (camera, GPS, push, etc.)
+
+**Device Registration:**
+- Register new devices
+- Revoke devices
+- Trust/untrust devices
+- Audit logging for all device operations
+
+**Connectivity Monitoring:**
+- Online/offline event listeners
+- Connection quality tracking
+- Real-time connectivity status
+- Event subscription system
 
 **Device Capabilities:**
-- `hasCapability()` - Check if device has specific capability
-- `requestCameraPermission()` - Request camera access
-- `requestGPSPosition()` - Get current GPS location
-- `openFilePicker()` - Open file selection dialog
+- Camera availability and permission
+- GPS availability and permission
+- QR scanner availability
+- Push notification support
+- Current position retrieval with accuracy
 
-**Offline Detection:**
-- `isOnline()` - Check network connectivity
-- `addConnectivityListeners()` - Listen for online/offline events
+**PWA Support:**
+- PWA installation detection
+- Install prompt handling
+- Service worker registration
 
-**PWA Features:**
-- `listenForInstallPrompt()` - Listen for PWA install prompt
-- `showInstallPrompt()` - Show install dialog
-- `isAppInstalled()` - Check if app is installed as PWA
+**Responsive Layout Helpers:**
+- Grid column calculation
+- Spacing calculation
+- Font size scaling
+- Compact/expanded view detection
 
-**Statistics:**
-- `getDeviceStats()` - Get device distribution statistics
+**Performance Monitoring:**
+- Performance measurement utilities
+- Budget checking
+- Slow operation warnings
 
-### 3. Responsive Shell (`src/shell/ResponsiveShell.tsx`)
+### 3. Device Capability Components
 
-**Device Detection:**
-- Automatic detection of mobile/tablet/desktop
-- Responsive layout switching
-- Window resize handling
-- Connectivity status monitoring
-
-**Mobile Shell:**
-- Top bar with menu and user buttons
-- Slide-in navigation menu
-- Slide-in user profile menu
-- Bottom navigation bar with 5 items
-- Safe area support for notched devices
-- Touch-optimized controls
-
-**Tablet Shell:**
-- Top bar with branding and user menu
-- Collapsible navigation rail (240px)
-- Main content area
-- Touch-friendly controls
-
-**Desktop Shell:**
-- Full top bar with branding
-- Collapsible sidebar (260px → 64px)
-- Main content area
-- Keyboard-optimized controls
-
-**Offline Banner:**
-- Displays when device is offline
-- Warning styling with icon
-- Non-intrusive placement
-
-### 4. Device Capability Components (`src/components/DeviceCapabilities.tsx`)
-
-**Camera Capture:**
-- Multi-photo support (configurable max)
-- Photo compression and resizing
-- Live camera preview
-- Photo grid with delete option
+#### CameraCapture Component
+- Multi-photo capture support
+- Image compression and resizing
+- Photo annotation support
 - Permission handling
 - Error states
+- Photo preview and management
+- Configurable max photos
 
-**GPS Capture:**
+#### GPSCapture Component
 - Location capture with accuracy display
-- Required accuracy threshold
-- Recapture option
-- Permission handling
-- Coordinate display (latitude, longitude, accuracy)
+- Permission prompts
+- Mock location detection
+- Accuracy threshold validation
+- Coordinate display
+- Timestamp tracking
+- Retake functionality
 
-**Connectivity Indicator:**
-- Online/offline status with icon
-- Battery level display (if available)
-- Network signal strength (if available)
-- Real-time updates
+#### QRScanner Component
+- QR code and barcode scanning
+- Multiple format support (QR_CODE, EAN_13, CODE_128, etc.)
+- Flash/torch control
+- Viewfinder overlay
+- Manual entry fallback
+- Test mode for development
+- Auto-zoom support
 
-**Device Info:**
-- Device type display
-- Platform information
-- Browser details
-- Capability grid with availability indicators
+#### ConnectivityIndicator Component
+- Real-time connection status
+- Connection type display
+- Bandwidth and latency metrics
+- Data saver indicator
+- Visual status badges
 
-### 5. Device Management Page (`src/pages/DeviceManagement.tsx`)
+#### OfflineBanner Component
+- Offline state notification
+- Auto-hide when online
+- User-friendly messaging
+
+#### ConnectionQuality Component
+- Visual quality indicator (4 bars)
+- Color-coded quality levels
+- Tooltip with details
+
+### 4. Responsive Shell Variants
+
+#### MobileShell
+- Top bar with menu toggle
+- Bottom navigation (5 items)
+- More menu overlay
+- Mobile-optimized navigation
+- Badge support
+- Safe area handling
+
+#### TabletShell
+- Collapsible navigation rail
+- Touch-friendly controls
+- Adaptive layout
+- Secondary pane support
+
+#### DesktopShell
+- Full sidebar navigation
+- Header with search and notifications
+- Multi-panel layouts
+- Keyboard shortcuts
+- Hover states
+
+### 5. Responsive Shell Demo Page
 
 **Features:**
-- PWA install banner (when not installed)
-- Connectivity status indicator
-- Device statistics (total, trusted, untrusted, revoked)
-- Device list with trust level badges
-- Device detail panel with full information
-- Trust/revoke device actions
-- Push notification enable/disable
-- Device capabilities display
-- Device information panel
+- Device information display
+- Capability detection
+- Connection quality monitoring
+- Camera capture demo
+- GPS capture demo
+- QR scanner demo
+- PWA information
+- Registered devices list
+- Breakpoints reference
 
-**Device Cards:**
-- Device type icon (mobile/tablet/desktop)
-- Platform and browser info
-- Trust level badge (color-coded)
-- Last seen and registered dates
-- Quick actions (trust/revoke)
-
-**Device Detail Panel:**
-- Full device information
-- Registration and activity timestamps
-- Trust level and revocation details
-- Action buttons (trust/revoke)
+**Interactive Elements:**
+- Live device type detection
+- Real-time connectivity status
+- Capability badges
+- Photo capture with preview
+- Location capture with accuracy
+- QR code scanning
+- PWA install prompt
 
 ### 6. PWA Configuration
 
-**Manifest (`public/manifest.json`):**
+**Manifest File (`public/manifest.json`):**
 - App name and description
-- Theme colors (brand blue)
-- Multiple icon sizes (72px to 512px)
-- Maskable icons for adaptive layouts
-- App shortcuts (Approvals, Tasks, Notifications)
-- Screenshots for app stores
-- Display mode: standalone
-- Orientation: any
+- Theme and background colors
+- Multiple icon sizes
+- Display mode (standalone)
+- App shortcuts
+- Categories
+- Screenshots
 
 **Service Worker (`public/sw.js`):**
-- Precache essential files on install
-- Cache cleanup on activate
-- Cache-first strategy for static assets
-- Network-first strategy for HTML pages
-- API requests always go to network
-- Offline fallback to cached pages
+- Static asset caching
+- Network-first strategy
+- Offline fallback
 - Push notification handling
-- Notification click handling
-- Message handling for skip waiting
+- Background sync
+- Periodic sync
+- IndexedDB for offline actions
+- Cache management
+
+**HTML Updates (`index.html`):**
+- PWA meta tags
+- Theme color
+- Apple mobile web app support
+- Service worker registration
+- Install prompt handling
+- Update detection
+- Pull-to-refresh prevention
+- Custom scrollbar styling
 
 ### 7. Integration
 
@@ -184,82 +224,84 @@ Part 21 implements a comprehensive responsive shell architecture that delivers d
 - `ff.rsp` - Master flag for responsive shell
 
 **Routes:**
-- `/home/devices` - Device management page
+- `/home/rsp` - Responsive shell demo
 
 **Navigation:**
-- Home → My Devices (sort order 20)
+- Home → Responsive Shell (sort order 20)
 
 **Protocol Controls:**
 - CP-RSP-01: Field-critical protocol actions fully usable at 360px
 
 ### Key Features
 
-1. **Responsive Shell Architecture** - Device-specific layouts for mobile, tablet, desktop
-2. **PWA Support** - Installable app with offline capabilities
-3. **Device Registration** - Track and manage user devices
-4. **Trust Management** - Mark devices as trusted/untrusted/revoked
-5. **Camera Capture** - Multi-photo capture with compression
-6. **GPS Capture** - Location capture with accuracy tracking
-7. **Connectivity Detection** - Online/offline status monitoring
-8. **Push Notifications** - Real-time alerts and updates
-9. **Device Capabilities** - Feature detection and availability
-10. **Offline Support** - Service worker caching strategy
-11. **Battery Monitoring** - Device battery level display
-12. **Network Monitoring** - Signal strength display
-13. **App Installation** - PWA install prompt and flow
-14. **Security** - Device revocation with reason tracking
-15. **Audit Trail** - Complete logging of device operations
+1. **Adaptive Navigation**: Device-specific navigation patterns (bottom nav, rail, sidebar)
+2. **Device Capabilities**: Camera, GPS, QR scanner with permission handling
+3. **PWA Support**: Installable app with offline capabilities
+4. **Connectivity Monitoring**: Real-time online/offline status
+5. **Responsive Layouts**: Automatic adaptation to screen size
+6. **Touch Optimization**: 44px minimum touch targets
+7. **Performance Budgets**: Device-specific performance targets
+8. **Offline-Ready**: Service worker with caching and background sync
+9. **Push Notifications**: PWA push notification support
+10. **Device Registration**: Track and manage user devices
+11. **Capability Detection**: Check device features before use
+12. **Accessibility**: WCAG 2.1 AA compliant
+13. **Smooth Transitions**: Animated state changes
+14. **Error Handling**: Graceful degradation
+15. **Audit Trail**: All device operations logged
 
 ### Architecture
 
 ```
-User visits app
+User Device
     ↓
-Detect device type (mobile/tablet/desktop)
-    ↓
-Render appropriate shell variant
+Device Detection (type, orientation, capabilities)
     ↓
 ┌─────────────────────────────────────┐
-│  Mobile Shell                       │
-│  - Top bar + Bottom nav             │
-│  - Slide-in menus                   │
-│  - Touch-optimized                  │
-├─────────────────────────────────────┤
-│  Tablet Shell                       │
-│  - Top bar + Navigation rail        │
-│  - Split pane layout                │
-│  - Touch-friendly                   │
-├─────────────────────────────────────┤
-│  Desktop Shell                      │
-│  - Top bar + Sidebar                │
-│  - Multi-panel layout               │
-│  - Keyboard-optimized               │
+│  Responsive Shell Selection         │
+│  ├─ Mobile: Bottom Nav + Overlay    │
+│  ├─ Tablet: Rail + Split Panes      │
+│  └─ Desktop: Sidebar + Header       │
 └─────────────────────────────────────┘
     ↓
-Auto-register device (if first visit)
+Capability Components
     ↓
-Check device capabilities
+┌─────────────────────────────────────┐
+│  Camera | GPS | QR Scanner          │
+│  (with permission handling)         │
+└─────────────────────────────────────┘
     ↓
-Enable features based on capabilities
+Connectivity Monitoring
     ↓
-Monitor connectivity
+┌─────────────────────────────────────┐
+│  Online/Offline Status              │
+│  Connection Quality                 │
+│  Push Notifications                 │
+└─────────────────────────────────────┘
     ↓
-Show offline banner if disconnected
+PWA Support
     ↓
-Handle push notifications
+┌─────────────────────────────────────┐
+│  Service Worker                     │
+│  Cache Management                   │
+│  Background Sync                    │
+│  Offline Actions Queue              │
+└─────────────────────────────────────┘
 ```
 
 ### Data Statistics
 
-- **Devices**: 5 sample devices
-- **Platforms**: web, android, ios
-- **Device Types**: mobile, tablet, desktop
-- **Trust Levels**: trusted, untrusted, revoked
-- **Capabilities**: 9 device features tracked
+- **Navigation Configs**: 3 (mobile, tablet, desktop)
+- **Device Capabilities**: 6 (touch, camera, GPS, QR, push, offline)
+- **Capture Components**: 3 (camera, GPS, QR)
+- **Connectivity Components**: 3 (indicator, banner, quality)
+- **Shell Variants**: 3 (mobile, tablet, desktop)
+- **PWA Icons**: 8 sizes (72px to 512px)
+- **Registered Devices**: 3 sample devices
 
 ### Build Status
 
-✅ **Build Successful** — 1,528.79 KB (JS) + 41.07 KB (CSS)
+✅ **Build Successful** — 1,567.75 KB (JS) + 42.76 KB (CSS)
 
 ### Dependencies
 
@@ -268,46 +310,24 @@ Handle push notifications
 
 ### Consumed By
 
-- Part 22 (Offline Engine) - Offline sync capabilities
-- Part 38 (Advanced Data Entry) - Form components
-- Part 111 (Offline Sync) - Sync engine
-- Part 145 (Dashboard Framework) - Dashboard widgets
+- Part 22 (Offline Engine) - Offline sync foundation
+- Part 38 (Advanced Data Entry) - Mobile forms
+- Part 111 (Offline Sync) - Queue interface
+- Part 145 (Dashboard Framework) - Responsive dashboards
 
 ### Protocol Controls Implemented
 
-- **CP-RSP-01**: Field-critical protocol actions fully usable at 360px
-
-### PWA Features
-
-- ✅ Installable on mobile and desktop
-- ✅ Offline support with service worker
-- ✅ Push notifications
-- ✅ App shortcuts
-- ✅ Custom icons and splash screens
-- ✅ Theme colors
-- ✅ Standalone display mode
-
-### Device Capabilities Supported
-
-- ✅ Camera capture with compression
-- ✅ GPS location with accuracy
-- ✅ QR/barcode scanning
-- ✅ File picker
-- ✅ Signature pad
-- ✅ Voice-to-text
-- ✅ Biometric authentication
-- ✅ Offline storage
-- ✅ Push notifications
+- **CP-RSP-01**: Field-critical protocol actions (gate status, exception request, emergency execution, approvals) fully usable at 360px
 
 ### Next Steps
 
 Part 22 — Offline-First Field Mobile Engine will build on this responsive foundation to add:
-- Offline data synchronization
-- Conflict resolution
+- Offline data storage
 - Background sync
+- Conflict resolution
 - Queue management
-- Data validation
+- Offline-first workflows
 
 ## Conclusion
 
-Part 21 provides a comprehensive responsive shell architecture that delivers optimal user experiences across all device types. The PWA support enables installation and offline capabilities, while the device management system provides security and control. The device capability components enable field users to capture photos, GPS locations, and scan QR codes directly from the app. The responsive shell automatically adapts to the device type, providing touch-optimized mobile interfaces, tablet-optimized layouts, and keyboard-optimized desktop experiences. This foundation enables all future field mobile features and ensures the ERP is accessible and usable on any device.
+Part 21 provides a comprehensive responsive shell architecture that delivers optimized experiences across mobile, tablet, and desktop devices. The implementation includes device capability components, PWA support, connectivity monitoring, and adaptive navigation patterns. All components follow WCAG 2.1 AA accessibility standards and are optimized for touch interaction on mobile devices. The PWA implementation enables offline functionality and installability, while the service worker provides intelligent caching and background sync capabilities.

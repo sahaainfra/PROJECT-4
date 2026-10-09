@@ -237,6 +237,21 @@ export const navigationRegistry: NavEntry[] = [
     keywords: ['dashboard', 'workspace', 'widget', 'kpi', 'personal', 'home'],
     isActive: true,
   },
+  // Responsive Shell Demo (Part 21)
+  {
+    id: 'nav-rsp',
+    group: 'Home',
+    labelKey: 'nav.rsp',
+    label: 'Responsive Shell',
+    iconKey: 'sys.device',
+    route: '/home/rsp',
+    surface: 'shell',
+    permissionKey: 'shell.home.view',
+    featureFlag: 'ff.rsp',
+    sortOrder: 20,
+    keywords: ['responsive', 'mobile', 'tablet', 'desktop', 'device', 'pwa', 'camera', 'gps', 'qr'],
+    isActive: true,
+  },
   // Device Management (Part 21)
   {
     id: 'nav-devices',

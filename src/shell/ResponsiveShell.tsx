@@ -1,117 +1,118 @@
 import React, { useState, useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
-  Menu,
-  Home,
-  ClipboardCheck,
-  Briefcase,
-  Bell,
-  User,
-  MoreHorizontal,
-  X,
-  ChevronLeft,
-  Settings,
-  LogOut,
-  Wifi,
-  WifiOff,
+  Home, CheckSquare, CheckCircle, Bell, MoreHorizontal, Building2,
+  FileText, BarChart3, Settings, Menu, X, ChevronRight, User,
+  Search, LayoutDashboard, ShoppingCart, Package, DollarSign, Users
 } from 'lucide-react';
-import { detectDeviceType, getDeviceCapabilities } from '../data/deviceData';
-import { addConnectivityListeners, isOnline } from '../core/DeviceService';
+import {
+  DeviceType,
+  NavItem,
+  defaultNavigationConfig,
+  getDeviceInfo,
+  BREAKPOINTS,
+} from '../data/responsiveData';
+import {
+  getCurrentDevice,
+  onDeviceChange,
+  isMobile,
+  isTablet,
+  isDesktop,
+} from '../core/ResponsiveService';
 
 // ═══════════════════════════════════════════════════════════
-// RESPONSIVE SHELL — Part 21
-// Mobile + Tablet + Desktop Experience
+// RESPONSIVE SHELL COMPONENT — Part 21
 // ═══════════════════════════════════════════════════════════
 
-export function ResponsiveShell() {
-  const [deviceType, setDeviceType] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
-  const [online, setOnline] = useState(isOnline());
+interface ResponsiveShellProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+export function ResponsiveShell({ children, className = '' }: ResponsiveShellProps) {
+  const [device, setDevice] = useState<DeviceType>(getCurrentDevice().type);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [moreMenuOpen, setMoreMenuOpen] = useState(false);
 
   useEffect(() => {
-    // Detect device type on mount and resize
-    const updateDeviceType = () => {
-      setDeviceType(detectDeviceType());
-    };
+    const unsubscribe = onDeviceChange((deviceInfo) => {
+      setDevice(deviceInfo.type);
+    });
 
-    updateDeviceType();
-    window.addEventListener('resize', updateDeviceType);
-
-    // Listen for connectivity changes
-    const cleanup = addConnectivityListeners(
-      () => setOnline(true),
-      () => setOnline(false)
-    );
-
-    return () => {
-      window.removeEventListener('resize', updateDeviceType);
-      cleanup();
-    };
+    return unsubscribe;
   }, []);
 
-  return (
-    <div className="h-screen flex flex-col overflow-hidden" style={{ background: 'var(--shell-bg)' }}>
-      {/* Offline Banner */}
-      {!online && (
-        <div className="px-4 py-2 text-xs font-medium text-center" style={{ background: 'var(--warning-50)', color: 'var(--warning-700)' }}>
-          <WifiOff size={12} className="inline mr-1" />
-          You are offline. Some features may be unavailable.
-        </div>
-      )}
-
-      {/* Render appropriate shell based on device type */}
-      {deviceType === 'mobile' && (
+  // Render appropriate shell based on device
+  switch (device) {
+    case 'mobile':
+      return (
         <MobileShell
-          menuOpen={mobileMenuOpen}
-          onToggleMenu={() => setMobileMenuOpen(!mobileMenuOpen)}
-          userMenuOpen={userMenuOpen}
-          onToggleUserMenu={() => setUserMenuOpen(!userMenuOpen)}
-        />
-      )}
-      {deviceType === 'tablet' && (
-        <TabletShell
-          menuOpen={mobileMenuOpen}
-          onToggleMenu={() => setMobileMenuOpen(!mobileMenuOpen)}
-          userMenuOpen={userMenuOpen}
-          onToggleUserMenu={() => setUserMenuOpen(!userMenuOpen)}
-        />
-      )}
-      {deviceType === 'desktop' && (
-        <DesktopShell
-          userMenuOpen={userMenuOpen}
-          onToggleUserMenu={() => setUserMenuOpen(!userMenuOpen)}
-        />
-      )}
-    </div>
-  );
+          mobileMenuOpen={mobileMenuOpen}
+          setMobileMenuOpen={setMobileMenuOpen}
+          moreMenuOpen={moreMenuOpen}
+          setMoreMenuOpen={setMoreMenuOpen}
+          className={className}
+        >
+          {children}
+        </MobileShell>
+      );
+    case 'tablet':
+      return (
+        <TabletShell className={className}>
+          {children}
+        </TabletShell>
+      );
+    case 'desktop':
+    default:
+      return (
+        <DesktopShell className={className}>
+          {children}
+        </DesktopShell>
+      );
+  }
 }
 
 // ═══════════════════════════════════════════════════════════
-// MOBILE SHELL
+// MOBILE SHELL — Part 21
 // ═══════════════════════════════════════════════════════════
 
-interface ShellProps {
-  menuOpen: boolean;
-  onToggleMenu: () => void;
-  userMenuOpen: boolean;
-  onToggleUserMenu: () => void;
+interface MobileShellProps {
+  children: React.ReactNode;
+  mobileMenuOpen: boolean;
+  setMobileMenuOpen: (open: boolean) => void;
+  moreMenuOpen: boolean;
+  setMoreMenuOpen: (open: boolean) => void;
+  className?: string;
 }
 
-function MobileShell({ menuOpen, onToggleMenu, userMenuOpen, onToggleUserMenu }: ShellProps) {
+function MobileShell({
+  children,
+  mobileMenuOpen,
+  setMobileMenuOpen,
+  moreMenuOpen,
+  setMoreMenuOpen,
+  className = '',
+}: MobileShellProps) {
   const navigate = useNavigate();
-  const capabilities = getDeviceCapabilities();
+  const location = useLocation();
+  const bottomNav = defaultNavigationConfig.mobile.bottomNav;
+  const moreMenu = defaultNavigationConfig.mobile.moreMenu;
 
-  const bottomNavItems = [
-    { icon: Home, label: 'Home', route: '/' },
-    { icon: ClipboardCheck, label: 'Tasks', route: '/home/wf' },
-    { icon: Briefcase, label: 'Projects', route: '/projects/list' },
-    { icon: Bell, label: 'Alerts', route: '/home/rt' },
-    { icon: MoreHorizontal, label: 'More', route: '/home/dash' },
-  ];
+  const handleNavClick = (item: NavItem) => {
+    if (item.id === 'more') {
+      setMoreMenuOpen(!moreMenuOpen);
+    } else {
+      navigate(item.route);
+      setMoreMenuOpen(false);
+    }
+  };
+
+  const isActive = (route: string): boolean => {
+    return location.pathname === route;
+  };
 
   return (
-    <>
+    <div className={`h-screen flex flex-col ${className}`} style={{ background: 'var(--shell-bg)' }}>
       {/* Top Bar */}
       <header
         className="flex items-center justify-between px-4 border-b"
@@ -123,108 +124,39 @@ function MobileShell({ menuOpen, onToggleMenu, userMenuOpen, onToggleUserMenu }:
         }}
       >
         <button
-          onClick={onToggleMenu}
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className="p-2 rounded-lg hover:bg-white/10 transition-colors"
-          aria-label="Toggle menu"
         >
           <Menu size={20} />
         </button>
 
         <div className="flex items-center gap-2">
-          <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs"
-            style={{ background: 'linear-gradient(135deg, var(--brand-500), var(--brand-700))', color: '#fff' }}
-          >
-            ERP
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs"
+            style={{ background: 'linear-gradient(135deg, var(--brand-500), var(--brand-700))', color: '#fff' }}>
+            <Building2 size={16} />
           </div>
           <span className="text-sm font-semibold">Construction ERP</span>
         </div>
 
         <button
-          onClick={onToggleUserMenu}
+          onClick={() => navigate('/search')}
           className="p-2 rounded-lg hover:bg-white/10 transition-colors"
-          aria-label="User menu"
         >
-          <User size={20} />
+          <Search size={20} />
         </button>
       </header>
 
       {/* Mobile Menu Overlay */}
-      {menuOpen && (
-        <div className="fixed inset-0 z-40">
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-40" style={{ background: 'var(--overlay-bg)' }}>
           <div
-            className="absolute inset-0"
-            style={{ background: 'var(--overlay-bg)' }}
-            onClick={onToggleMenu}
-          />
-          <aside
-            className="absolute left-0 top-0 bottom-0 w-80 z-50 animate-slide-in"
-            style={{ background: 'var(--nav-bg)', borderRight: '1px solid var(--border-subtle)' }}
+            className="absolute left-0 top-0 bottom-0 w-80 animate-slide-in"
+            style={{ background: 'var(--surface-bg)', borderRight: '1px solid var(--border-subtle)' }}
           >
             <div className="p-4 border-b flex items-center justify-between" style={{ borderColor: 'var(--border-subtle)' }}>
-              <span className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>
-                Menu
-              </span>
-              <button onClick={onToggleMenu} className="p-1 rounded hover:bg-[var(--nav-hover)]">
-                <X size={20} style={{ color: 'var(--text-muted)' }} />
-              </button>
-            </div>
-            <nav className="p-4 space-y-1">
-              {[
-                { icon: Home, label: 'Dashboard', route: '/' },
-                { icon: ClipboardCheck, label: 'My Approvals', route: '/home/wf' },
-                { icon: Briefcase, label: 'Projects', route: '/projects/list' },
-                { icon: Bell, label: 'Notifications', route: '/home/rt' },
-                { icon: User, label: 'My Accountability', route: '/home/acc' },
-                { icon: Settings, label: 'Settings', route: '/home/dash' },
-              ].map((item) => {
-                const Icon = item.icon;
-                return (
-                  <button
-                    key={item.route}
-                    onClick={() => {
-                      navigate(item.route);
-                      onToggleMenu();
-                    }}
-                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-[var(--nav-hover)] transition-colors"
-                    style={{ color: 'var(--text-secondary)' }}
-                  >
-                    <Icon size={18} />
-                    {item.label}
-                  </button>
-                );
-              })}
-            </nav>
-          </aside>
-        </div>
-      )}
-
-      {/* User Menu Overlay */}
-      {userMenuOpen && (
-        <div className="fixed inset-0 z-40">
-          <div
-            className="absolute inset-0"
-            style={{ background: 'var(--overlay-bg)' }}
-            onClick={onToggleUserMenu}
-          />
-          <aside
-            className="absolute right-0 top-0 bottom-0 w-80 z-50 animate-slide-in"
-            style={{ background: 'var(--nav-bg)', borderLeft: '1px solid var(--border-subtle)' }}
-          >
-            <div className="p-4 border-b flex items-center justify-between" style={{ borderColor: 'var(--border-subtle)' }}>
-              <span className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>
-                Profile
-              </span>
-              <button onClick={onToggleUserMenu} className="p-1 rounded hover:bg-[var(--nav-hover)]">
-                <X size={20} style={{ color: 'var(--text-muted)' }} />
-              </button>
-            </div>
-            <div className="p-4">
-              <div className="flex items-center gap-3 mb-4">
-                <div
-                  className="w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold"
-                  style={{ background: 'var(--brand-50)', color: 'var(--brand-700)' }}
-                >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold"
+                  style={{ background: 'var(--brand-50)', color: 'var(--brand-700)' }}>
                   RK
                 </div>
                 <div>
@@ -236,29 +168,79 @@ function MobileShell({ menuOpen, onToggleMenu, userMenuOpen, onToggleUserMenu }:
                   </div>
                 </div>
               </div>
-              <div className="space-y-1">
-                <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-[var(--nav-hover)] transition-colors"
-                  style={{ color: 'var(--text-secondary)' }}>
-                  <Settings size={18} />
-                  Preferences
-                </button>
-                <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-[var(--nav-hover)] transition-colors"
-                  style={{ color: 'var(--error-600)' }}>
-                  <LogOut size={18} />
-                  Sign Out
-                </button>
-              </div>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-2 rounded-lg hover:bg-[var(--nav-hover)]"
+              >
+                <X size={20} style={{ color: 'var(--text-muted)' }} />
+              </button>
             </div>
-          </aside>
+
+            <nav className="p-2">
+              {defaultNavigationConfig.desktop.sidebar.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    navigate(item.route);
+                    setMobileMenuOpen(false);
+                  }}
+                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-colors hover:bg-[var(--nav-hover)]"
+                  style={{
+                    background: isActive(item.route) ? 'var(--nav-active-bg)' : 'transparent',
+                    color: isActive(item.route) ? 'var(--nav-active-text)' : 'var(--text-secondary)',
+                  }}
+                >
+                  {item.icon === 'Home' && <Home size={18} />}
+                  {item.icon === 'LayoutDashboard' && <LayoutDashboard size={18} />}
+                  {item.icon === 'Building2' && <Building2 size={18} />}
+                  {item.icon === 'ShoppingCart' && <ShoppingCart size={18} />}
+                  {item.icon === 'Package' && <Package size={18} />}
+                  {item.icon === 'DollarSign' && <DollarSign size={18} />}
+                  {item.icon === 'Users' && <Users size={18} />}
+                  {item.icon === 'BarChart3' && <BarChart3 size={18} />}
+                  <span className="text-sm font-medium">{item.label}</span>
+                </button>
+              ))}
+            </nav>
+          </div>
         </div>
       )}
 
       {/* Main Content */}
       <main className="flex-1 overflow-y-auto pb-16">
-        <div className="animate-fade-in">
-          <Outlet />
-        </div>
+        {children}
       </main>
+
+      {/* More Menu Overlay */}
+      {moreMenuOpen && (
+        <div
+          className="fixed inset-0 z-30"
+          style={{ background: 'var(--overlay-bg)' }}
+          onClick={() => setMoreMenuOpen(false)}
+        >
+          <div
+            className="absolute bottom-16 left-4 right-4 rounded-xl shadow-xl overflow-hidden animate-fade-in"
+            style={{ background: 'var(--surface-bg)', border: '1px solid var(--border-subtle)' }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-2">
+              {moreMenu.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavClick(item)}
+                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-colors hover:bg-[var(--nav-hover)]"
+                >
+                  {item.icon === 'Building2' && <Building2 size={18} style={{ color: 'var(--text-secondary)' }} />}
+                  {item.icon === 'FileText' && <FileText size={18} style={{ color: 'var(--text-secondary)' }} />}
+                  {item.icon === 'BarChart3' && <BarChart3 size={18} style={{ color: 'var(--text-secondary)' }} />}
+                  {item.icon === 'Settings' && <Settings size={18} style={{ color: 'var(--text-secondary)' }} />}
+                  <span className="text-sm" style={{ color: 'var(--text-primary)' }}>{item.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Bottom Navigation */}
       <nav
@@ -270,145 +252,66 @@ function MobileShell({ menuOpen, onToggleMenu, userMenuOpen, onToggleUserMenu }:
           paddingBottom: 'env(safe-area-inset-bottom, 0px)',
         }}
       >
-        {bottomNavItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = window.location.pathname === item.route;
+        {bottomNav.map((item) => {
+          const active = isActive(item.route) || (item.id === 'more' && moreMenuOpen);
           return (
             <button
-              key={item.route}
-              onClick={() => navigate(item.route)}
-              className="flex flex-col items-center gap-1 px-3 py-2 min-w-[64px] transition-colors"
-              style={{ color: isActive ? 'var(--brand-600)' : 'var(--text-muted)' }}
+              key={item.id}
+              onClick={() => handleNavClick(item)}
+              className="flex flex-col items-center justify-center gap-1 flex-1 h-full transition-colors relative"
+              style={{
+                color: active ? 'var(--brand-600)' : 'var(--text-muted)',
+                minHeight: '44px',
+              }}
             >
-              <Icon size={22} strokeWidth={isActive ? 2.5 : 1.8} />
+              {item.icon === 'Home' && <Home size={20} strokeWidth={active ? 2.5 : 1.8} />}
+              {item.icon === 'CheckSquare' && <CheckSquare size={20} strokeWidth={active ? 2.5 : 1.8} />}
+              {item.icon === 'CheckCircle' && <CheckCircle size={20} strokeWidth={active ? 2.5 : 1.8} />}
+              {item.icon === 'Bell' && <Bell size={20} strokeWidth={active ? 2.5 : 1.8} />}
+              {item.icon === 'MoreHorizontal' && <MoreHorizontal size={20} strokeWidth={active ? 2.5 : 1.8} />}
+              
               <span className="text-[10px] font-medium">{item.label}</span>
+
+              {item.badge && item.badge > 0 && (
+                <span
+                  className="absolute top-2 right-1/2 translate-x-5 min-w-[18px] h-[18px] rounded-full flex items-center justify-center text-[10px] font-bold"
+                  style={{ background: 'var(--error-500)', color: '#fff' }}
+                >
+                  {item.badge > 99 ? '99+' : item.badge}
+                </span>
+              )}
             </button>
           );
         })}
       </nav>
-    </>
+    </div>
   );
 }
 
 // ═══════════════════════════════════════════════════════════
-// TABLET SHELL
+// TABLET SHELL — Part 21
 // ═══════════════════════════════════════════════════════════
 
-function TabletShell({ menuOpen, onToggleMenu, userMenuOpen, onToggleUserMenu }: ShellProps) {
-  const navigate = useNavigate();
-
-  return (
-    <>
-      {/* Top Bar */}
-      <header
-        className="flex items-center px-4 border-b"
-        style={{
-          height: '64px',
-          background: 'var(--shell-bar-bg)',
-          color: 'var(--shell-bar-text)',
-          borderColor: 'var(--shell-bar-border)',
-        }}
-      >
-        <button
-          onClick={onToggleMenu}
-          className="p-2 rounded-lg hover:bg-white/10 transition-colors mr-3"
-          aria-label="Toggle menu"
-        >
-          <Menu size={20} />
-        </button>
-
-        <div className="flex items-center gap-2">
-          <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs"
-            style={{ background: 'linear-gradient(135deg, var(--brand-500), var(--brand-700))', color: '#fff' }}
-          >
-            ERP
-          </div>
-          <span className="text-sm font-semibold">Construction ERP</span>
-        </div>
-
-        <div className="flex-1" />
-
-        <button
-          onClick={onToggleUserMenu}
-          className="flex items-center gap-2 p-2 rounded-lg hover:bg-white/10 transition-colors"
-        >
-          <div
-            className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold"
-            style={{ background: 'linear-gradient(135deg, var(--brand-500), var(--brand-700))', color: '#fff' }}
-          >
-            RK
-          </div>
-          <span className="text-xs font-medium">Rajesh Kumar</span>
-        </button>
-      </header>
-
-      <div className="flex flex-1 overflow-hidden">
-        {/* Navigation Rail */}
-        {menuOpen && (
-          <aside
-            className="border-r overflow-y-auto"
-            style={{
-              width: '240px',
-              background: 'var(--nav-bg)',
-              borderColor: 'var(--border-subtle)',
-            }}
-          >
-            <nav className="p-3 space-y-1">
-              {[
-                { icon: Home, label: 'Dashboard', route: '/' },
-                { icon: ClipboardCheck, label: 'My Approvals', route: '/home/wf' },
-                { icon: Briefcase, label: 'Projects', route: '/projects/list' },
-                { icon: Bell, label: 'Notifications', route: '/home/rt' },
-                { icon: User, label: 'My Accountability', route: '/home/acc' },
-                { icon: Settings, label: 'Settings', route: '/home/dash' },
-              ].map((item) => {
-                const Icon = item.icon;
-                return (
-                  <button
-                    key={item.route}
-                    onClick={() => navigate(item.route)}
-                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-[var(--nav-hover)] transition-colors"
-                    style={{ color: 'var(--text-secondary)' }}
-                  >
-                    <Icon size={18} />
-                    {item.label}
-                  </button>
-                );
-              })}
-            </nav>
-          </aside>
-        )}
-
-        {/* Main Content */}
-        <main className="flex-1 overflow-y-auto">
-          <div className="animate-fade-in">
-            <Outlet />
-          </div>
-        </main>
-      </div>
-    </>
-  );
+interface TabletShellProps {
+  children: React.ReactNode;
+  className?: string;
 }
 
-// ═══════════════════════════════════════════════════════════
-// DESKTOP SHELL
-// ═══════════════════════════════════════════════════════════
-
-interface DesktopShellProps {
-  userMenuOpen: boolean;
-  onToggleUserMenu: () => void;
-}
-
-function DesktopShell({ userMenuOpen, onToggleUserMenu }: DesktopShellProps) {
+function TabletShell({ children, className = '' }: TabletShellProps) {
   const navigate = useNavigate();
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const location = useLocation();
+  const [collapsed, setCollapsed] = useState(false);
+  const rail = defaultNavigationConfig.tablet.rail;
+
+  const isActive = (route: string): boolean => {
+    return location.pathname === route;
+  };
 
   return (
-    <>
+    <div className={`h-screen flex flex-col ${className}`} style={{ background: 'var(--shell-bg)' }}>
       {/* Top Bar */}
       <header
-        className="flex items-center px-4 border-b"
+        className="flex items-center px-4 gap-3 border-b"
         style={{
           height: '56px',
           background: 'var(--shell-bar-bg)',
@@ -417,88 +320,259 @@ function DesktopShell({ userMenuOpen, onToggleUserMenu }: DesktopShellProps) {
         }}
       >
         <button
-          onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-          className="p-2 rounded-lg hover:bg-white/10 transition-colors mr-3"
-          aria-label="Toggle sidebar"
+          onClick={() => setCollapsed(!collapsed)}
+          className="p-2 rounded-lg hover:bg-white/10 transition-colors"
         >
           <Menu size={20} />
         </button>
 
         <div className="flex items-center gap-2">
-          <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs"
-            style={{ background: 'linear-gradient(135deg, var(--brand-500), var(--brand-700))', color: '#fff' }}
-          >
-            ERP
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs"
+            style={{ background: 'linear-gradient(135deg, var(--brand-500), var(--brand-700))', color: '#fff' }}>
+            <Building2 size={16} />
+          </div>
+          <span className="text-sm font-semibold">Construction ERP</span>
+        </div>
+
+        <div className="flex-1" />
+
+        <button
+          onClick={() => navigate('/search')}
+          className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs border border-white/10 hover:bg-white/10 transition-colors"
+        >
+          <Search size={14} />
+          <span>Search...</span>
+        </button>
+
+        <button className="p-2 rounded-lg hover:bg-white/10 transition-colors relative">
+          <Bell size={18} />
+          <span className="absolute top-1 right-1 w-2 h-2 rounded-full" style={{ background: 'var(--error-500)' }} />
+        </button>
+
+        <button className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-white/10 transition-colors">
+          <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
+            style={{ background: 'linear-gradient(135deg, var(--brand-500), var(--brand-700))', color: '#fff' }}>
+            RK
+          </div>
+        </button>
+      </header>
+
+      <div className="flex flex-1 overflow-hidden">
+        {/* Navigation Rail */}
+        <nav
+          className="flex flex-col border-r transition-all"
+          style={{
+            width: collapsed ? '64px' : '200px',
+            background: 'var(--nav-bg)',
+            borderColor: 'var(--border-subtle)',
+            transitionDuration: 'var(--motion-normal)',
+          }}
+        >
+          <div className="flex-1 py-3">
+            {rail.map((item) => {
+              const active = isActive(item.route);
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => navigate(item.route)}
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg mx-2 transition-colors ${
+                    collapsed ? 'justify-center' : ''
+                  }`}
+                  style={{
+                    background: active ? 'var(--nav-active-bg)' : 'transparent',
+                    color: active ? 'var(--nav-active-text)' : 'var(--text-secondary)',
+                    width: collapsed ? '48px' : 'calc(100% - 16px)',
+                  }}
+                  title={item.label}
+                >
+                  {item.icon === 'Home' && <Home size={20} strokeWidth={active ? 2.5 : 1.8} />}
+                  {item.icon === 'Building2' && <Building2 size={20} strokeWidth={active ? 2.5 : 1.8} />}
+                  {item.icon === 'CheckSquare' && <CheckSquare size={20} strokeWidth={active ? 2.5 : 1.8} />}
+                  {item.icon === 'CheckCircle' && <CheckCircle size={20} strokeWidth={active ? 2.5 : 1.8} />}
+                  {item.icon === 'FileText' && <FileText size={20} strokeWidth={active ? 2.5 : 1.8} />}
+                  {item.icon === 'BarChart3' && <BarChart3 size={20} strokeWidth={active ? 2.5 : 1.8} />}
+                  
+                  {!collapsed && (
+                    <span className="text-sm font-medium">{item.label}</span>
+                  )}
+
+                  {item.badge && item.badge > 0 && !collapsed && (
+                    <span
+                      className="ml-auto min-w-[20px] h-5 rounded-full flex items-center justify-center text-[10px] font-bold"
+                      style={{ background: 'var(--error-500)', color: '#fff' }}
+                    >
+                      {item.badge}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </nav>
+
+        {/* Main Content */}
+        <main className="flex-1 overflow-y-auto">
+          {children}
+        </main>
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════
+// DESKTOP SHELL — Part 21
+// ═══════════════════════════════════════════════════════════
+
+interface DesktopShellProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+function DesktopShell({ children, className = '' }: DesktopShellProps) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [collapsed, setCollapsed] = useState(false);
+  const sidebar = defaultNavigationConfig.desktop.sidebar;
+  const header = defaultNavigationConfig.desktop.header;
+
+  const isActive = (route: string): boolean => {
+    return location.pathname === route;
+  };
+
+  return (
+    <div className={`h-screen flex flex-col ${className}`} style={{ background: 'var(--shell-bg)' }}>
+      {/* Top Bar */}
+      <header
+        className="flex items-center px-4 gap-3 border-b"
+        style={{
+          height: '56px',
+          background: 'var(--shell-bar-bg)',
+          color: 'var(--shell-bar-text)',
+          borderColor: 'var(--shell-bar-border)',
+        }}
+      >
+        <button
+          onClick={() => setCollapsed(!collapsed)}
+          className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+        >
+          <Menu size={20} />
+        </button>
+
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs"
+            style={{ background: 'linear-gradient(135deg, var(--brand-500), var(--brand-700))', color: '#fff' }}>
+            <Building2 size={16} />
           </div>
           <div className="hidden lg:block">
-            <div className="text-sm font-semibold leading-none">Construction ERP</div>
-            <div className="text-[10px] opacity-60 leading-none mt-0.5">Acme Infrastructure Ltd</div>
+            <div className="text-sm font-semibold">Construction ERP</div>
+            <div className="text-[10px] opacity-60">Acme Infrastructure Ltd</div>
           </div>
         </div>
 
         <div className="flex-1" />
 
         <button
-          onClick={onToggleUserMenu}
-          className="flex items-center gap-2 p-2 rounded-lg hover:bg-white/10 transition-colors"
+          onClick={() => navigate('/search')}
+          className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs border border-white/10 hover:bg-white/10 transition-colors min-w-[200px]"
         >
-          <div
-            className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold"
-            style={{ background: 'linear-gradient(135deg, var(--brand-500), var(--brand-700))', color: '#fff' }}
+          <Search size={14} />
+          <span>Search projects, documents...</span>
+          <span className="ml-auto opacity-40 text-[10px]">⌘K</span>
+        </button>
+
+        <div className="flex-1" />
+
+        {header.map((item) => (
+          <button
+            key={item.id}
+            onClick={() => navigate(item.route)}
+            className="p-2 rounded-lg hover:bg-white/10 transition-colors relative"
           >
+            {item.icon === 'Search' && <Search size={18} />}
+            {item.icon === 'Bell' && <Bell size={18} />}
+            {item.icon === 'User' && <User size={18} />}
+            
+            {item.badge && item.badge > 0 && (
+              <span className="absolute top-1 right-1 w-4 h-4 rounded-full text-[9px] font-bold flex items-center justify-center"
+                style={{ background: 'var(--error-500)', color: '#fff' }}>
+                {item.badge}
+              </span>
+            )}
+          </button>
+        ))}
+
+        <button className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-white/10 transition-colors">
+          <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
+            style={{ background: 'linear-gradient(135deg, var(--brand-500), var(--brand-700))', color: '#fff' }}>
             RK
           </div>
           <div className="hidden md:block text-left">
-            <div className="text-xs font-medium leading-none">Rajesh Kumar</div>
-            <div className="text-[10px] opacity-60 leading-none mt-0.5">Project Manager</div>
+            <div className="text-xs font-medium">Rajesh Kumar</div>
+            <div className="text-[10px] opacity-60">Project Manager</div>
           </div>
         </button>
       </header>
 
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
-        <aside
-          className="border-r overflow-y-auto transition-all"
+        <nav
+          className="flex flex-col border-r transition-all"
           style={{
-            width: sidebarCollapsed ? '64px' : '260px',
+            width: collapsed ? '64px' : '260px',
             background: 'var(--nav-bg)',
             borderColor: 'var(--border-subtle)',
             transitionDuration: 'var(--motion-normal)',
           }}
         >
-          <nav className="p-3 space-y-1">
-            {[
-              { icon: Home, label: 'Dashboard', route: '/' },
-              { icon: ClipboardCheck, label: 'My Approvals', route: '/home/wf' },
-              { icon: Briefcase, label: 'Projects', route: '/projects/list' },
-              { icon: Bell, label: 'Notifications', route: '/home/rt' },
-              { icon: User, label: 'My Accountability', route: '/home/acc' },
-              { icon: Settings, label: 'Settings', route: '/home/dash' },
-            ].map((item) => {
-              const Icon = item.icon;
+          <div className="flex-1 py-3">
+            {sidebar.map((item) => {
+              const active = isActive(item.route);
               return (
                 <button
-                  key={item.route}
+                  key={item.id}
                   onClick={() => navigate(item.route)}
-                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-[var(--nav-hover)] transition-colors"
-                  style={{ color: 'var(--text-secondary)' }}
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg mx-2 transition-colors ${
+                    collapsed ? 'justify-center' : ''
+                  }`}
+                  style={{
+                    background: active ? 'var(--nav-active-bg)' : 'transparent',
+                    color: active ? 'var(--nav-active-text)' : 'var(--text-secondary)',
+                    width: collapsed ? '48px' : 'calc(100% - 16px)',
+                  }}
+                  title={item.label}
                 >
-                  <Icon size={18} />
-                  {!sidebarCollapsed && <span>{item.label}</span>}
+                  {item.icon === 'Home' && <Home size={18} strokeWidth={active ? 2.2 : 1.8} />}
+                  {item.icon === 'LayoutDashboard' && <LayoutDashboard size={18} strokeWidth={active ? 2.2 : 1.8} />}
+                  {item.icon === 'Building2' && <Building2 size={18} strokeWidth={active ? 2.2 : 1.8} />}
+                  {item.icon === 'ShoppingCart' && <ShoppingCart size={18} strokeWidth={active ? 2.2 : 1.8} />}
+                  {item.icon === 'Package' && <Package size={18} strokeWidth={active ? 2.2 : 1.8} />}
+                  {item.icon === 'DollarSign' && <DollarSign size={18} strokeWidth={active ? 2.2 : 1.8} />}
+                  {item.icon === 'Users' && <Users size={18} strokeWidth={active ? 2.2 : 1.8} />}
+                  {item.icon === 'BarChart3' && <BarChart3 size={18} strokeWidth={active ? 2.2 : 1.8} />}
+                  
+                  {!collapsed && (
+                    <span className="text-sm font-medium">{item.label}</span>
+                  )}
+
+                  {item.badge && item.badge > 0 && !collapsed && (
+                    <span
+                      className="ml-auto min-w-[20px] h-5 rounded-full flex items-center justify-center text-[10px] font-bold"
+                      style={{ background: 'var(--error-500)', color: '#fff' }}
+                    >
+                      {item.badge}
+                    </span>
+                  )}
                 </button>
               );
             })}
-          </nav>
-        </aside>
+          </div>
+        </nav>
 
         {/* Main Content */}
         <main className="flex-1 overflow-y-auto">
-          <div className="animate-fade-in">
-            <Outlet />
-          </div>
+          {children}
         </main>
       </div>
-    </>
+    </div>
   );
 }
