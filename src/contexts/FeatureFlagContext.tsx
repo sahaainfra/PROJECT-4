@@ -261,6 +261,14 @@ const defaultFlags: Record<string, FeatureFlag> = {
     rolloutPercent: 100,
     ownerPrompt: 'Part 18',
   },
+  'ff.ds': {
+    key: 'ff.ds',
+    description: 'Unified Enterprise UI/UX Component Library',
+    scopeType: 'global',
+    enabled: true,
+    rolloutPercent: 100,
+    ownerPrompt: 'Part 19',
+  },
 };
 
 const FeatureFlagCtx = createContext<FeatureFlagContextValue | null>(null);
