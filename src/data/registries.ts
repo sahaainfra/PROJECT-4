@@ -252,6 +252,21 @@ export const navigationRegistry: NavEntry[] = [
     keywords: ['responsive', 'mobile', 'tablet', 'desktop', 'device', 'pwa', 'camera', 'gps', 'qr'],
     isActive: true,
   },
+  // Offline Sync Center (Part 22)
+  {
+    id: 'nav-offline',
+    group: 'Field',
+    labelKey: 'nav.offline',
+    label: 'Offline Sync',
+    iconKey: 'sys.cloud',
+    route: '/field/offline',
+    surface: 'shell',
+    permissionKey: 'offline.device.register',
+    featureFlag: 'ff.offline',
+    sortOrder: 30,
+    keywords: ['offline', 'sync', 'conflict', 'device', 'snapshot', 'command', 'queue'],
+    isActive: true,
+  },
   // Device Management (Part 21)
   {
     id: 'nav-devices',

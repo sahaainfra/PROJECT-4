@@ -52,6 +52,7 @@ import { BulkJobMonitor } from './pages/BulkJobMonitor';
 import { ApiVersionManagement } from './pages/ApiVersionManagement';
 import { DashboardWorkspace } from './pages/DashboardWorkspace';
 import { ResponsiveShellDemo } from './pages/ResponsiveShellDemo';
+import { OfflineSyncCenter } from './pages/OfflineSyncCenter';
 import { DeviceManagement } from './pages/DeviceManagement';
 import {
   PurchaseRequisitionsPage,
@@ -110,6 +111,9 @@ function App() {
 
               {/* Responsive Shell Demo (Part 21) */}
               <Route path="/home/rsp" element={<ResponsiveShellDemo />} />
+
+              {/* Offline Sync Center (Part 22) */}
+              <Route path="/field/offline" element={<OfflineSyncCenter />} />
 
               {/* Home - Device Management (Part 21) */}
               <Route path="/home/devices" element={<DeviceManagement />} />
