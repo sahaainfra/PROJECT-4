@@ -222,6 +222,21 @@ export const navigationRegistry: NavEntry[] = [
       },
     ],
   },
+  // Dashboard - My Workspace (Part 20)
+  {
+    id: 'nav-dash',
+    group: 'Home',
+    labelKey: 'nav.dash',
+    label: 'My Workspace',
+    iconKey: 'layout.dashboard',
+    route: '/home/dash',
+    surface: 'shell',
+    permissionKey: 'dash.workspace.personalise',
+    featureFlag: 'ff.dash',
+    sortOrder: 19,
+    keywords: ['dashboard', 'workspace', 'widget', 'kpi', 'personal', 'home'],
+    isActive: true,
+  },
   // Procurement
   {
     id: 'nav-procurement',

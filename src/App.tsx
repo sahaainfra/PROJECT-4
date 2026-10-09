@@ -50,6 +50,7 @@ import { ApiClientManagement } from './pages/ApiClientManagement';
 import { ApiUsageDashboard } from './pages/ApiUsageDashboard';
 import { BulkJobMonitor } from './pages/BulkJobMonitor';
 import { ApiVersionManagement } from './pages/ApiVersionManagement';
+import { DashboardWorkspace } from './pages/DashboardWorkspace';
 import {
   PurchaseRequisitionsPage,
   PurchaseOrdersPage,
@@ -101,6 +102,9 @@ function App() {
 
               {/* Workflow - My Approvals (Part 12) */}
               <Route path="/home/wf" element={<MyApprovalsInbox />} />
+
+              {/* Dashboard - My Workspace (Part 20) */}
+              <Route path="/home/dash" element={<DashboardWorkspace />} />
 
               {/* Procurement Module */}
               <Route path="/procurement" element={<ProcurementIndexPage />} />
