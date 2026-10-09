@@ -51,6 +51,7 @@ import { ApiUsageDashboard } from './pages/ApiUsageDashboard';
 import { BulkJobMonitor } from './pages/BulkJobMonitor';
 import { ApiVersionManagement } from './pages/ApiVersionManagement';
 import { DashboardWorkspace } from './pages/DashboardWorkspace';
+import { DeviceManagement } from './pages/DeviceManagement';
 import {
   PurchaseRequisitionsPage,
   PurchaseOrdersPage,
@@ -105,6 +106,9 @@ function App() {
 
               {/* Dashboard - My Workspace (Part 20) */}
               <Route path="/home/dash" element={<DashboardWorkspace />} />
+
+              {/* Home - Device Management (Part 21) */}
+              <Route path="/home/devices" element={<DeviceManagement />} />
 
               {/* Procurement Module */}
               <Route path="/procurement" element={<ProcurementIndexPage />} />

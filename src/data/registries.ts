@@ -237,6 +237,21 @@ export const navigationRegistry: NavEntry[] = [
     keywords: ['dashboard', 'workspace', 'widget', 'kpi', 'personal', 'home'],
     isActive: true,
   },
+  // Device Management (Part 21)
+  {
+    id: 'nav-devices',
+    group: 'Home',
+    labelKey: 'nav.devices',
+    label: 'My Devices',
+    iconKey: 'sys.mobile',
+    route: '/home/devices',
+    surface: 'shell',
+    permissionKey: 'sec.device.manage',
+    featureFlag: 'ff.rsp',
+    sortOrder: 20,
+    keywords: ['device', 'mobile', 'tablet', 'desktop', 'pwa', 'push'],
+    isActive: true,
+  },
   // Procurement
   {
     id: 'nav-procurement',
